@@ -1,2 +1,0 @@
-
-package massimo.groppelli.gclib;
