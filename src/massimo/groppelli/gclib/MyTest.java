@@ -17,6 +17,14 @@ public class MyTest
 	@Test
 	public void methodInterceptorTest()
 	{
+		// Gestione delle callback interceptor tramite un'apposita interfaccia.
+		// 1) Method (Non invocabile)
+		// 2) Args (Valore parametri)
+		// 3) StackTraceElement del chiamate.
+		
+		// In input passare una lista di metodi da skippare. (Capire quale è la declaring class per le interface)
+		
+		// Creare un'implementazione apposita per GCLib (versione compresa) 
 		MethodInterceptor callbackInterceptor = new MethodInterceptor() 
 		{
 			@Override
@@ -25,27 +33,48 @@ public class MyTest
 				// Completamento inizializzazione della classe instrumentata per l'invocazione dei metodi reali.
 				if(method.getName().equals("setOpzione"))
 				{
-					printStack();
+					StackTraceElement stackElement =  findStackTraceElement();
+					System.out.println("Call setOpzione class -> " + stackElement.getClassName() +  " line-> " + stackElement.getLineNumber());
+
 					// Il chiamante vero è la prima entry nello stack appena successiva alla prima che contiene $$EnhancerByCGLIB$$
 					proxy.invokeSuper(obj, args);
 				}
 				else
 				{
 					System.out.println("intercepted -> " +  method.getName() + " declaredClass -> " + method.getDeclaringClass());
-					proxy.invokeSuper(obj, args);
 					if(method.getDeclaringClass() == SuperClasse.class)
 					{
-						printStack();
+						StackTraceElement stackElement =  findStackTraceElement();
+						System.out.println("CALLER class -> " + stackElement.getClassName() +  " line-> " + stackElement.getLineNumber());
 					}
+					proxy.invokeSuper(obj, args);
 				}
 				return null;
 			}
 
-			private void printStack() {
+			private void printStack() 
+			{
 				for(StackTraceElement stackTrace : Thread.currentThread().getStackTrace())
 				{
 					System.out.println(" class -> " + stackTrace.getClassName() +  " line-> " + stackTrace.getLineNumber());
 				}
+			}
+			
+			private StackTraceElement findStackTraceElement() 
+			{
+				boolean isNextStackTraceElement = false;
+				for(StackTraceElement stackTrace : Thread.currentThread().getStackTrace())
+				{
+					if(isNextStackTraceElement)
+					{
+						return stackTrace;
+					}
+					if(stackTrace.getClassName().contains("$$EnhancerByCGLIB$$"))
+					{
+						isNextStackTraceElement = true;
+					}
+				}
+				return null;
 			}
 		};
 		SottoClasse proxy = (SottoClasse) Enhancer.create(SottoClasse.class, callbackInterceptor);
