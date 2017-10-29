@@ -25,6 +25,8 @@ public class MyTest
 				// Completamento inizializzazione della classe instrumentata per l'invocazione dei metodi reali.
 				if(method.getName().equals("setOpzione"))
 				{
+					printStack();
+					// Il chiamante vero è la prima entry nello stack appena successiva alla prima che contiene $$EnhancerByCGLIB$$
 					proxy.invokeSuper(obj, args);
 				}
 				else
@@ -33,18 +35,23 @@ public class MyTest
 					proxy.invokeSuper(obj, args);
 					if(method.getDeclaringClass() == SuperClasse.class)
 					{
-						for(StackTraceElement stackTrace : Thread.currentThread().getStackTrace())
-						{
-							System.out.println(stackTrace.getClassName() + "line " + stackTrace.getLineNumber());
-						}
+						printStack();
 					}
 				}
 				return null;
+			}
+
+			private void printStack() {
+				for(StackTraceElement stackTrace : Thread.currentThread().getStackTrace())
+				{
+					System.out.println(" class -> " + stackTrace.getClassName() +  " line-> " + stackTrace.getLineNumber());
+				}
 			}
 		};
 		SottoClasse proxy = (SottoClasse) Enhancer.create(SottoClasse.class, callbackInterceptor);
 		proxy.setOpzione(true);
 		proxy.metodoSottoclasse();
+		System.out.println("Proxy To String -> " + proxy);
 	}
 	
 	@Ignore

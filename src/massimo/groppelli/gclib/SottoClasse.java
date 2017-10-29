@@ -20,6 +20,5 @@ public class SottoClasse extends SuperClasse
 			System.out.println("Output metodo della sotto classe SENZA opzione");
 		}
 		this.metodoSuperclasse();
-		this.metodoSuperClasseProtected();
 	}
 }
