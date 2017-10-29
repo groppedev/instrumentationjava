@@ -1,4 +1,4 @@
-package massimo.groppelli.gclib;
+package massimo.groppelli.gclib.test;
 
 public class SottoClasse extends SuperClasse 
 {
@@ -20,5 +20,19 @@ public class SottoClasse extends SuperClasse
 			System.out.println("Output metodo della sotto classe SENZA opzione");
 		}
 		this.metodoSuperclasse();
+	}
+
+	@Override
+	public void metodoInterfaccia() 
+	{
+		try 
+		{
+			Thread.sleep(2000);
+		} 
+		catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+		}
+		System.out.println("Output metodo interfaccia");
 	}
 }

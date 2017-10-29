@@ -1,6 +1,6 @@
-package massimo.groppelli.gclib;
+package massimo.groppelli.gclib.test;
 
-public abstract class SuperClasse 
+public abstract class SuperClasse implements IInterface
 {
 	public void metodoSuperclasse()
 	{
@@ -11,6 +11,7 @@ public abstract class SuperClasse
 	protected String metodoSuperClasseProtected()
 	{
 		System.out.println("Output metodo della super classe protected");
+		this.metodoInterfaccia();
 		return "a" + "b";
 	}
 }
