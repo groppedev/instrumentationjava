@@ -1,4 +1,4 @@
-package massimo.groppelli.gclib;
+package massimo.groppelli.gclib.test;
 
 import java.lang.reflect.Method;
 
@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import massimo.groppelli.gclib.SottoClasse;
+import massimo.groppelli.gclib.SuperClasse;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -22,7 +24,8 @@ public class MyTest
 		// 2) Args (Valore parametri)
 		// 3) StackTraceElement del chiamate.
 		
-		// In input passare una lista di metodi da skippare. (Capire quale è la declaring class per le interface)
+		
+		// In input passare una lista di metodi da skippare. (Capire quale ï¿½ la declaring class per le interface)
 		
 		// Creare un'implementazione apposita per GCLib (versione compresa) 
 		MethodInterceptor callbackInterceptor = new MethodInterceptor() 
@@ -36,7 +39,7 @@ public class MyTest
 					StackTraceElement stackElement =  findStackTraceElement();
 					System.out.println("Call setOpzione class -> " + stackElement.getClassName() +  " line-> " + stackElement.getLineNumber());
 
-					// Il chiamante vero è la prima entry nello stack appena successiva alla prima che contiene $$EnhancerByCGLIB$$
+					// Il chiamante vero ï¿½ la prima entry nello stack appena successiva alla prima che contiene $$EnhancerByCGLIB$$
 					proxy.invokeSuper(obj, args);
 				}
 				else
